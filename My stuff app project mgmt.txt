@@ -1,0 +1,283 @@
+
+
+For each component to get a 'view items' button, you need to update the container.location_contents array with the new item,  when setting the new item with setListItems(). This might be where you can use immer; otherwise you'll have to do update the array, and then the 'contents' object (check the react site for this process) DONE!
+
+POPULATE container.local_contents
+That array needs to be populated with item name, item id and the optional 'item total'. Then the application will re-render and, since the array is no longer empty, once user returns to the main page, the container that just had items added to it should show how many items are in the container, and the view button will appear.  DONE!
+
+Populate VS create
+These are the two steps; the first one is the initial creation of the location object, which is then used to load the container onto the shelf, and then the second process is the creation of items within the location and update the object with those items.  So, of course, you need to get into the container in the first place to be able to add items to it.  So perhaps, you can have a place items button on the main container, because there's no point having a 'view items' button if there are no items; that doesn't make any sense.  DONE!
+
+
+DELETE button: 
+A delete button needs to be added to the list items also  DONE!
+
+
+
+
+
+
+
+COPY JSX FOR INPUT FORM
+        <form className='new-location-form' id="location-creation-form" onSubmit={createLocation}>
+            <label htmlFor="new-location-text">New Location</label>
+          <input value={location} id='new-location-text' type="text" placeholder='Add location' 
+          onChange={e => setLocation(e.target.value)}
+            />
+    
+    <button type="submit" className="add-location"
+
+    >Add</button>
+    </form>
+        
+        <h2 className="locations-title">My Locations</h2>
+
+Today's tasks - 5 August
+
+- Get save 'container' array to local storage -EASY
+- function for the deletion of items within a location - DONE
+- checkbox for delete button (to prevent accidental deletion)
+-  search for items and how to display search results. 
+- deal with duplicate items or locations
+- auto updates while searching. 
+- voice search
+
+implementation ----
+Save entries to local storage (this should be automatic, but I don't know yet if the item lists will load) 
+
+After deleting all items from a location, check that container button changes from view items to add items and the delete button is reintroduced - DONE!
+
+
+
+
+
+
+
+Today's tasks -  6 August
+
+
+Inside main locations have containers which can be clicked into, and inside THOSE is where new items will be added (russian doll style)
+Containers vs unboxed
+have a 'general' view where you can see 'everything' listed under headings. Or a view entire location button and perhaps a 'go to' location on each area. 
+CASE CONVERSION - convert everything to title case using regular expressions. 
+
+
+
+Today's tasks 9 august
+Solved Back button issue where child container name was showing where parent container name should have been showing.  For example, when viewing section inside a man area, say, Chest Main, the name displayed at the top of the page is CHEST MAIN. If you then click into the box with the name 'TOP' you navigate to that box and the word 'TOP' displays to indicate you are in that box.  But when you navigate back to the parent, CHEST MAIN, the wording showing is TOP.  This occurred because the page was taking the current value for 'areaSpecific' which  is not re-rendered when you exit that area.  So in the back to previous view function I created a variable for the parent container of the current container (call that variable 'parent'), sent that variable as a prarameter of closeSection(), which executes in the main app, and inside that 'APP' function, execute setAreaSpecific(parent), which will change the container name to parent, so that when that page is displayed the parent name of the section you were just in will display.  And because you are in the parent of the section you just exited; the name at the top of the page matches your location.  
+
+So, navigation from box viewer (inside a section) to section viewer has been solved
+Now, navigation from box items (inside a box) to box viewer. DONE!
+
+BUT, navigation from section viewer down to box does not render the box name on screen so change that first.  DONE!
+
+ALL NAVIGATIONS CORRECTLY LABELING PAGE LOCATIONS
+
+
+NEXT PROBLEM - 
+All boxes, with the exception of one of them, are displaying the wrong contents; that of the excluded box. 
+This may be caused by viewing the contents of and backing out of the excluded box.  When you then try to view the contents of other boxes, the contents of the initially viewed box are shown, irrespective of the box clicked.  
+
+UPDATE to above problem: 
+Even when refreshing the page all of the viewed boxes are still displaying the same content.  It may be because I'm using a zero index somewhere to render box items.  I can't remember where it is right now so will have to look for it. 
+
+ISSUE found.  The issue seems to be with the 'indexOfBox' variable which is used to tell the map function which box items to map and return.  For some reason, at the moment that number stays the same (3) but that needs to change somewhere. 
+
+Yep, the index of box is referring to one specific box and that's why the map is rendering the same items irrespective of the clicked box.  'indexOfBox' is the wrong value. 
+
+ANOTHER ISSUE - using array indexes as references to help find elements. 
+This is a bad idea because, once the element is assigned a position number, if the object is deleted, any object beyond that object will have a number that is out of sync with its actual position number in the array.  For instance, if your object was assigned the number 'zero', because it was the first item created, then the list item after it will be assigned 'one'.  But, when you delete the first the item assigned the number zero, the second item, which will now take position zero, still has the number 'one' assigned to it.  So if you search for the item using that number, the wrong item will be returned. This will only ever work if you only delete the final element of a list, because there are no subsequent array items to shift downward.  An alternative fix would be to assign numbers to elements based on the position of the array element that refers to them.  But that seems computationally heavy. 
+
+This requires a complete re-work
+
+PROPOSED SOLUTION - 
+Instead of using the parent index, use the parent id, then there's no mistaking. 
+Remove all references to object index position in referring array, because deletion of the object will cause issues. DONE!
+
+15 August tasks -----------------------------------------------------------
+Delete Item and delete box functions COMPLETE
+Created an array to hold all created items as objects containing all information about the item, box id, section id and location id, and a copy of the item's object, containing item name, item id, parent box name and parent box id. This array is updated each time a new item is created, or if an existing item is deleted. 
+
+Add search inputt and button (maybe even have a unique page for search)
+
+Added a start page with two buttons, a 'search items' button which takes you to a form for entering search details, and a 'view/edit locations' button which takes you to view locations where you can add to the inventory.  
+
+On the search form I've added a 'back to start page' button which returns user to the start page. 
+
+On the main locations area I've added the same back to start page button that returns user to the start page. 
+
+MANUAL SEARCH COMPLETED. 
+
+Delete section function COMPLETED. 
+
+21 AUGUST ----------------------------------------
+
+FOUND ANOTHER ISSUE
+Boxes doubling up in display all items output. 
+Just realized that if you add an item, and then immediately click the display all boxes button, a duplicate of the box you entered the item into is created.  So check what happens on adding an item. 
+If you go into the box and delete everything, then both boxes disappear from the display all items
+
+Noted that removing the last entry that caused the duplicate actually removes the entire double (interesting) 
+Noted that the issue does not repeat if you add a second entry and immediately clicked the display all button. 
+Also noted that it appears to not matter whether you click the button or not.  Will try this on other areas. 
+So it's definitely not happening in all areas, so I assume it might have something to do with when I created those items.  Maybe  there's some configuration in older items that's causing this problem.  I just noticed that the newest added section doesn't have this issue. 
+
+DEFINITELY AN ISSUE WITH boxes CREATED BEFORE CERTAIN UPDATES. 
+I emptied and deleted a few boxes, recreated them and re-added items, and that solved the issue. 
+
+NOTE: the above solution did not work.  
+Got to the root of this issue in the end. see solution below: 
+
+When the allItemsArray was filtered for 'only' items belonging to the specific section which the user wants to view, the results were 'almost' ordered according to box contents, but not quite.  I initially assumed that items belonging to a specific box would be grouped together in the array because, on first looking, that appeared to be the case. 
+
+Having assumed this, I created the code to loop through the filtered array, and then each time a new box id was found, to create a new element with that box name, and map through the array to find all item siblings of the particular box to render them in the box element. But, if within a section you don't add all box items consecutively, i.e if you add items to one box then add other items to different box, and then go back to the original box and add items, since the distribution of the items in the all items array are in chronological order,   the items added to the second box will be distributed directly after the first group of items added to the first box, and then after the 'second box' items, the  second group of items added to the first box will be distributed - in the all items array distribution there will be a gap between first added and second added items of the first box; and between those will be the items you added to the second box, before returning to add items to the first box. 
+
+The effect of this is that a box will be created two or more times depending on how the box items are destributed in all items array,  because the function finds the same new id more than once and I didn't code for duplicates; I felt that eliminating duplicates required extra work, updating state and things seemed to be getting more complicated than necessary. .  
+
+In the end the solution was simply to create a new array out of the filtered array, and then mutate it but using array.sort(), using  the box id as the object to be sorted, so in the new array, all items of the same box would then be grouped together.  Then I looped through the new array to find box id's, create a new box, and render box items to that box.  This solved the issue. 
+
+NOTE* I thought to just sort the entire all items array each time an item was added, but that seems entirely unecessary because, if after adding an item the user has no wish to view all items of a section there's no need for the array to be sorted.  Additionally, I thought to sort the all items array at the point where the user wishes to see all the items in one section, but the number of items in a section is relatively small compared to the total number of items the inventory, and hence only a small portion of the all items array needs to be sorted when the user wishes to view all the items in a section; most of the results of the sort would be useless to the user, so a large proportion of the search is redundant. 
+
+NOTE 2*.  The filter and sort of the section items from the all items array can be simplified further by applying both filter and sort chined together so that there's no need to create a new and mutated array.  Just use the initial array, which is itself new. 
+
+NOT 2 CORRECTION*
+Actually, the unfiltered array is created on the main app page, in the allSectionItems function, which receives its data as a parameter from the new box page, where the 'viewAllSectionItems' button is rendered.  From there, the section id is used to filter out all item objects from allItemsArray that have the current section id is their own section id.  And that's is the array that's used to render all section items.  So from THERE is where the sort could happen.  I can just chain the sort onto the filter method and then that eliminates the need to do the sort later on just prior to rendering the items in their respective boxes. So will attempt his now. 
+
+
+
+ADJUSTMENT FOR all items object compenent . line 16
+
+  // here I'm going to try to make the box clicable, and enable user to go directly to view items in the clicked box. It should be a simple case of activating the viewBox function with the require parameters. Happy.  This is already done for 'search results' so it can easily be replicated here. 
+
+FIX BOX VIEWER JSX by removing boxPath object and trying simpler method. 
+ACTUALLY - this boxPath is different in that it maps exactly to an item, which we want to have a lot of details about, such as location, section and box id's. So this might have to stay. will have a closer look at it. 
+
+
+
+
+
+
+
+
+
+
+
+
+MOVING ITEMS FUNCTION ----------------------------------------------------------------------------------------
+
+display current path to ITEM 
+
+
+create a copy of all items array... 
+use boxPath details to find the index of the item's object in the array. 
+
+map container to get location names and set as options in drop down menu, (for location selection)
+on location select, map container to get index associated with location
+create a variable, locationObject = container[name_index] and save selection (with useState)
+display selected location in destination element
+
+map locationObject to get section names and set as options for dropdown menu, (for section selection)
+on section select, map locationObject.location_contents to get index associated with section
+create sectionObject = locationObject.location_contents[section_index] and save selection with useState
+display selected section in destination element
+
+
+map sectionObject to get box names and set as options for dropdown menu, (for box selection) 
+(NOTE - if location name and section name are unchanged, don't render current box name because the change has to be to another box within same section nested in the same location )
+on box select, map sectionObject .section_contents to get index associated with box
+create boxObject= sectionObject .box_contents[box_index] and save selection with useState
+display selected box in destination element
+
+
+using the index number of the item in allItemsArray, retrieve the item and change the properties to match the selections made above
+execute setAllItemsArray(copy of allItemsArray), which will set the new path of the item. 
+
+Show 'successful' message
+Show go to previous location
+show go to new location
+
+
+ALL OF THE ABOVE COMPLETED. 
+
+MOVING BOX FUNCTION ----------------------------------------------------------------------------------------------
+Basically the same process with a few alterations
+
+UNCHANGED PARTS OF THE PROCESS: - 
+display current path to BOX
+
+map container to get location names and set as options in drop down menu, (for location selection)
+on location select, map container to get index associated with location
+create a variable, locationObject = container[name_index] and save selection (with useState)
+display selected location in destination element
+
+map locationObject to get section names and set as options for dropdown menu, (for section selection) - 
+(NOTE - if location name is unchanged, don't render current section name because the change has to be to another  section in the same location )
+on section select, map locationObject.location_contents to get index associated with section
+create sectionObject = locationObject.location_contents[section_index] and save selection with useState
+display selected section in destination element
+
+CHANGES: -
+
+NOTE that, when the box is moved to another section, you'll need to change the details of ALL items contained in that specific box; which means locating all items  in the which have the box id, and then changing their section name property. 
+
+PROCESS: 
+create a copy of 'allItemsArray'
+map copy of array, each  array item will have the below format: 
+
+ {
+'item_name':newBoxItem.itemString,
+'item_object': newBoxItem,
+'location_id': boxPath.location_id,
+'section_id': boxPath.section_id,
+'box_id': boxPath.box_id,
+'item_id':newBoxItem.id
+}
+
+
+for all objects that have the box id of the item, the location_id and section_id properties of the object should be renamed to the location and section id that have been selected for the new location. This should be done even if only the section of the box is changed but the location remains the same. It's trivial, but prevents having to write extra code to account for both cases, one where the section AND location is changed and the other where ONLY the section is changed. The change always results in the existence of a location and a section anyway. 
+
+
+
+NEXT TASKS 1 September
+
+
+-1. ensure that first option in the selection menu is selectable when the menu first appears. 
+0. implemenet transfer box function
+1. implement cancel transfer button
+2 before actually fully implementating the transfer, implement the destination button to ensure it works. 
+3. implement return to origin button. 
+4. Think about how to save transfers; same manner as saving new items. 
+5. Transfer search page;  you could even incorporate a button on the search page for user to decide which search they want to do, transfer search or item search. 
+6. Transfer search might even be broken down into further categories, search by item and search by date... that can be for much later though.  
+
+
+COMPLETED --- 
+back button to original box
+destination button to new box
+decide how to place move buttons within boxes
+replace all buttons with viewAreaButton. 
+
+
+
+ISSUES. -- 2 September. 
+
+There are some issues with the mixing of the delete item and delete box functions.  In the end I had to make adjustments to some of the locations since all location ID's got renamed with one single id (belonging to the desk location), using a function to re-write them.  Thankfully the location id's were located in another area, somewhere in the section contents referring back to the location parent. 
+
+The plan is to, at least for now, separate the functions transferring the items from the ones transferring the boxes, and then once they are working, create a copy of the app and try to see if I can merge the two without causing problems.   One of the issues was  a trivial mistsake I made when using the function for the back button.  In the main App component, I was setting states for the parent id and section id's, but then I switched the id's, so I was setting the parent id state using the id of the section I had been in, and setting the section id, using the parent id.  after a few tries, it became impossible to render view sections, because obviously, the location ID  which was being used for map, was actually a section id, so when mapping through locations, looking for that id, nothing was found, and this caused problems further down the line.  It's mainly fixed but there are still a couple of issues I need to attend to, such as when clicking the transfer button for items, the wrong item name appears as the name of the item to be transferred.  In fact, the same item shows, irrespective of the actual item I selected.  So that's the first problem to address today. 
+
+Realized that boxPath.new_item_string could be gotten rid of, by adding itemString, which was passed as a parameter to the original function,  as a parameter to the createItemBox function in the main app. It is then used instead of taking it from boxPath. 
+
+Then decided to send box_contents to the NewItem component, and then on to the TransferButton component.  Inside that component, just to be sure, I've cleared the boxPath.new_item_string, property, just leaving it as an empty string.  And I'll use the ItemString prop (also sent to TransferButton) as an additional parameter to be sent to the transfer page; that way, the correct itemName has to be displayed. 
+
+I'm also sending the box_contents over to the TransferPage, but will have to set the condition to ignore empty contents.  Actually, that's not needed because, if there are no contents in a box, then there will be no item component rendered and hence no 'move item' button will exist to activate a transfer. 
+
+
+
+
+
+
+
+
+
+
+
