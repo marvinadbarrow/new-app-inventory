@@ -3,7 +3,11 @@ import { useState } from "react";
 import { v4 } from "uuid";
 export const DestinationBoxes = ({selectedLocationInfo, selectedSectionInfo, testContainer, sectionItems, newBoxName, transferApplied, modifiedBoxName, existingDuplicates}) =>{
 
-
+    // for some reason, modified boxname is not coming here after it has been updated on the transfer page - so maybe this has to refresh using useEffect or maybe that's why  you needed local storage.  I think it's not present because this page does not re-render once the name has been changed
+console.log('modifiedBoxName')
+console.log(modifiedBoxName)
+console.log('selectedLocationInfo')
+console.log(selectedLocationInfo)
 // if incoming modified box name has a value then set it as state otherwise leave previous state, but I'm not sure it will work and might have to use local storage to solve this.
 
 
@@ -26,22 +30,30 @@ export const DestinationBoxes = ({selectedLocationInfo, selectedSectionInfo, tes
 
 // TRANSFER NOT YET APPLIED
       if(transferApplied !== 'yes'){
+        if(modifiedBoxName !==''){ // if modified box name exists but transfer is not applied it means that a duplicate has been dealth with and the name of the transfer box no longer clashes with the name of the destination box that its  previous name duplicated so all classnames can be normal since there is no longer a conflict at destinatoin
+            nameOfClass = "transfer-box-item" 
+        }else{
 
-// if if name of box in destination duplicates transfer box name
+// no modified box name exists yet, so check if there is a duplicate and if  destination box name duplicates the trasfer box name should be highlighted bold red
 if(box.box_name == sectionItems.box_name){
 
- // highlight box with warning color
-     nameOfClass = "transfer-box-item warning-red"
-    }else{ // otherwise, currently examined box is not a duplicate so use regular color - if there are no duplicates then no box will be coloured red
-    nameOfClass = "transfer-box-item" 
-}
+    // highlight box with warning color
+        nameOfClass = "transfer-box-item warning-red"
+       }else{ // otherwise, currently examined box is not a duplicate so use regular color - if there are no duplicates then no box will be coloured red
+       nameOfClass = "transfer-box-item" 
+   }
+
+
+
+        }
+
       }
 
 else{ // TRANSFER IS HAS BEEN APPLIED
-if(modifiedBoxName !==''){ // if modified box name exists
-
+if(localStorage.getItem('modified_box_name')){ // if a modified box name is saved to local storage
+let modified = JSON.parse(localStorage.getItem('modified_box_name'))
    // search for destination box that has modified name
-        if(box.box_name == modifiedBoxName){ 
+        if(box.box_name == modified){ 
 
             // highlight green; it is the transfer box (renamed)
             nameOfClass = "transfer-box-item success-green"

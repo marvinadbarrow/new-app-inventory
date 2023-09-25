@@ -45,11 +45,21 @@ useEffect(()=>{
 
 
 
+// only if sectionItems is not an empty string
+if(sectionItems !==''){
+// log wether modified box name exists (and show name if it does)
+modifiedBoxName !==''?console.log('modified box name exists:' + modifiedBoxName): console.log('modified box name does not exist')
+}
+
+// only if boxDetails is not an empty string
+if(boxDetails !==''){
+// log wether modified item name exists (and show name if it does)
+modifiedItemName !==''?console.log('modified item name exists:' + modifiedItemName): console.log('modified item name does not exist')
+}
 
 
 
-console.log("modified box name")
-console.log(modifiedBoxName) // these should be empty on page load
+
 let objectType;
 let locationName;
 let sectionName;
@@ -65,10 +75,6 @@ let destinationId
 let originId
 let destinationBox;
 
-console.log('incoming box details to transfer page line 72')
-console.log(boxDetails)
-
-// Only the item ID is needed in order to search allItemsArray, the useState values, which are the location, section and box ids will replace the current item object properties. 
 
 // if sectionItems is empty, an item is being transferred
 if(sectionItems == ''){
@@ -107,8 +113,8 @@ destinationBox = 'Box:' // updated at time of menu select
 
 
 // the origin will either be box or section - those details are in the box above the button. 
-backButtonText = ` Go to ${objectType} Origin`
-destinationButtonText = ` Go to ${objectType} Destination`
+backButtonText = `${objectType} Origin`
+destinationButtonText = `${objectType} Destination`
 
 
 
@@ -145,22 +151,6 @@ setDuplicateFound(boxDetails.new_item_string) // sets name of duplicate (transfe
       }, [selectedBoxInfo])
 
 
-// SETTING MODIFIED ITEM NAME
-function applyItemNameChange(modifiedName){
-    
-    if(modifiedName !== undefined || modifiedName !==''){
-        // check for existence of modified nam
-        console.log('modified item name exists')
-        console.log(modifiedName)
-        setModifiedItemName(modifiedName)
-        // setExistingDuplicates(0)
-    }
-        else{
-            // modified name isn't processing (find out why)
-            console.log('modified is undefined or missing')
-        }
-
-}
 
 
 // transfer item process
@@ -354,27 +344,12 @@ setDuplicateFound(sectionItems.box_name) // sets name of duplicate (transfer box
     }
           }, [selectedSectionInfo])
 
-// SETTING MODIFIED BOX NAME
-function applyBoxNameChange(modifiedName){
-    
-    if(modifiedName !== undefined || modifiedName !==''){
-        // check for existence of modified nam
-        console.log('modified name exists')
-        console.log(modifiedName)
-        setModifiedBoxName(modifiedName)
-        // setExistingDuplicates(0)
-    }
-        else{
-            // modified name isn't processing (find out why)
-            console.log('modified is undefined or missing')
-        }
 
-}
 
 
 // transfer box items
 function processBoxItems(){
-
+console.log('processing box transfer .... line: 362 - TransferPage')
     let originBoxName = sectionItems.box_name
     let originSectionName = sectionItems.parent_section_name
     let originSectionId = sectionItems.section_id
@@ -493,8 +468,7 @@ let newBoxDetails = {
 
 // create a new array to hold new box items (as objects) which will be created in the map below, by giving the properties of the new items the value of the properties of the old items, but giving the parent_Box property the value of 'originName' which is will be a new name if a duplicate box was found at the destination, or the original name if no duplicate was found.  The other values, item id, item name and box id do not change. 
 let newBoxContents = []
-console.log('line 390')
-console.log(newBoxContents)
+
 
 transitObj.box_details.box_contents.map(contents =>{
     // create object and assign property values
@@ -511,15 +485,11 @@ newBoxContents.push(newItemObject)
 
 })
 
-console.log('box contents with updated parent_Box parameter for original or modified box name')
-console.log(newBoxContents)
+// console.log('box contents with updated parent_Box parameter for original or modified box name')
+// console.log(newBoxContents)
 
 // then assign the new array to the box_contents property of the newbox
 newBoxDetails.box_contents = newBoxContents
-
-
-
-
 
 //change the properties in all of the allItemsArray objects that have a box id associated with the transfer box
 
@@ -539,7 +509,7 @@ justBoxItems.map(item =>{
 // create a new object  for each item in the box, keep details not needing modification, but update section and location details to reflect the destination details
 let newItem;
 
-// if modified box name exists use 'that' for parent box name of item
+// if modified box name exists use 'that' for parent box name of item 
 if(modifiedBoxName !== undefined || modifiedBoxName !==''){
     console.log('modified name exists')
     console.log(modifiedBoxName)
@@ -558,7 +528,7 @@ if(modifiedBoxName !== undefined || modifiedBoxName !==''){
     }
 
 
-}else{ // if no modified box name exists use original box name for item
+}else{ // if no modified box name exists use original parent box name for item 
     console.log('modified name is undefined or missing')
     newItem = {
         'item_name':item.item_name,
@@ -587,12 +557,6 @@ let completedNewArray = [...arrayWithoutItems, ...tempArray]
 let duplicates = 0; // assume no duplicate exists
 let duplicateName; // variable for duplicate name (only one is needed to stop the process)
 
-console.log("transition box name line 499")
-console.log(transitObj.boxA_name)
-console.log('modified box name')
-console.log(modifiedBoxName)
-console.log("destination section contents line 499")
-console.log(transitObj.destination.section_contents)
 
 // map destination section
 transitObj.destination.section_contents.map(boxes =>{
@@ -633,23 +597,39 @@ setTestAllItemsArray(completedNewArray)
 
 }
 
+
+
 // attempt TRANSFER
-function attemptTransfer(confirm){
+function attemptTransfer(confirm, otherVariable){
     // conditions for accepting transfer
-if(boxDetails !== ''){ // if box details is not just an empty string then boxDetails exist
+if(boxDetails !== ''){ // if box details exist,  transfer object is an item
 
 // if a box name is selected in the 'box' options menu
     if(selectedBoxInfo.box_name){ // accept transfer
+
+// log if function was executed with modified ITEM  name or not
+modifiedItemName !==''?console.log('ITEM name was modified for transfer'): console.log('ITEM name was not modified for transfer')
+
 setTransferApplied(confirm)
+
+processTransferItem(boxDetails)
     } // otherwise alert user that an entire path must be selected
     else{alert('please select location, section AND box before attempting tranfer')}
 }
  // OTHERWISE (box details do not exist): 
  else if(sectionItems !== undefined){ // if section details exist 
     if(selectedSectionInfo.section_name){ // and section menu has been selected
-   
+
+// log if function was executed with modified BOX name or not
+modifiedBoxName !==''?console.log('BOX name was modified'): console.log('BOX name not modified')
+
+
+if(otherVariable !== undefined){
+    console.log(otherVariable)
+}
         setTransferApplied(confirm) // then accept transfer
-processBoxItems(selectedSectionInfo.section_id, selectedLocationInfo.location_id)
+        
+processBoxItems()
 // otherwise alert user that both location and section options must be selected
     }else{alert('please select location AND section before attempting tranfer')}
 
@@ -658,8 +638,59 @@ processBoxItems(selectedSectionInfo.section_id, selectedLocationInfo.location_id
 
 }
 
+
+// TO RUN PROCESS BOX AFTER BOX NAME IS MODIFIED
+// SETTING MODIFIED BOX NAME
+function applyBoxNameChange(modifiedName){
+    
+    if(modifiedName !== undefined || modifiedName !==''){
+        // check for existence of modified nam
+        console.log('modified name exists')
+        console.log(modifiedName)
+        setModifiedBoxName(modifiedName)
+// attemptTransfer('yes')
+setExistingDuplicates(0);
+setDuplicateFound('')
+    }
+        else{
+            // modified name isn't processing (find out why)
+            console.log('modified is undefined or missing')
+        }
+
+}
+
+// SETTING MODIFIED ITEM NAME
+function applyItemNameChange(modifiedName){
+    
+    if(modifiedName !== undefined || modifiedName !==''){
+        // check for existence of modified nam
+        console.log('modified item name exists')
+        console.log(modifiedName)
+        setModifiedItemName(modifiedName)
+setDuplicateItemExists(0); // reset duplicates so that item can be transferred
+setDuplicateFound('') // reset duplicate name
+    }
+        else{
+            // modified name isn't processing (find out why)
+            console.log('modified is undefined or missing')
+        }
+
+}
+
+
+
+
     return (
         <>
+
+{ // SUCCESS MESSAGE  ---------------------------------------------
+transferApplied == 'yes'  &&
+<div className="successful-transfer">
+    <h3 className="sucess-confirmed">TRANSFER SUCCESSFUL</h3>
+</div>
+}
+
+
 
 <div className="tranfer-object-info-div">
        {transferApplied !== 'yes'  &&
@@ -670,7 +701,7 @@ processBoxItems(selectedSectionInfo.section_id, selectedLocationInfo.location_id
         {// if transfer has been applied but duplicates do exist, show warning (transfer won't complete until this is resolved)
 existingDuplicates > 0  &&
 <>
-<DuplicateWarning duplicateFound={duplicateFound} newBoxName={newBoxName} setExistingDuplicates={setExistingDuplicates} applyBoxNameChange={applyBoxNameChange} setNewBoxName={setNewBoxName} setTransferApplied={setTransferApplied} setDuplicateFound={setDuplicateFound} setSelectedSectionInfo={setSelectedSectionInfo} selectedSectionInfo={selectedSectionInfo} selectedLocationInfo={selectedLocationInfo} testContainer={testContainer} setSelectedLocationInfo={setSelectedLocationInfo}/>
+<DuplicateWarning duplicateFound={duplicateFound} newBoxName={newBoxName} setExistingDuplicates={setExistingDuplicates} applyBoxNameChange={applyBoxNameChange} setNewBoxName={setNewBoxName} setTransferApplied={setTransferApplied} setDuplicateFound={setDuplicateFound} setSelectedSectionInfo={setSelectedSectionInfo} selectedSectionInfo={selectedSectionInfo} selectedLocationInfo={selectedLocationInfo} testContainer={testContainer} setSelectedLocationInfo={setSelectedLocationInfo} attemptTransfer={attemptTransfer}/>
 </>
 }
 
@@ -679,9 +710,18 @@ existingDuplicates > 0  &&
 {
 // if duplicate item exists then show warning popup
 duplicateItemExists > 0 &&
-<DuplicateItemWarning setDuplicateItemExists={setDuplicateItemExists} duplicateFound={duplicateFound} modifiedItemName={modifiedItemName} applyItemNameChange={applyItemNameChange} setSelectedSectionInfo={setSelectedSectionInfo} setSelectedBoxInfo={setSelectedBoxInfo} setDuplicateFound={setDuplicateFound}/>
+<DuplicateItemWarning setDuplicateItemExists={setDuplicateItemExists} duplicateFound={duplicateFound} modifiedItemName={modifiedItemName} applyItemNameChange={applyItemNameChange} setSelectedSectionInfo={setSelectedSectionInfo} setSelectedBoxInfo={setSelectedBoxInfo} setDuplicateFound={setDuplicateFound} attemptTransfer={attemptTransfer}/>
 }
 
+
+
+
+
+
+{
+
+    existingDuplicates < 1 &&
+    duplicateItemExists < 1 &&
         <div className="transfer-elements-container">
         {
             // existingDuplicates < 1 &&
@@ -689,12 +729,6 @@ duplicateItemExists > 0 &&
     <OriginElement locationName={locationName} sectionName={sectionName} sectionItems={sectionItems} boxDetails={boxDetails} boxName={boxName}/>
 }
 
-{ // SUCCESS MESSAGE  ---------------------------------------------
-transferApplied == 'yes'  &&
-<div className="successful-transfer">
-    <h3 className="sucess-confirmed">TRANSFER SUCCESSFUL</h3>
-</div>
-}
 
 
 {
@@ -734,10 +768,15 @@ beginSelect == '' &&
 
 
         </div>
+
+}
+
+
 { transferApplied !== 'yes' && // hide advance and return buttons if transfer not applied (using ViewAreaButton component)
+
+    duplicateItemExists < 1 &&
     existingDuplicates < 1 &&
-
-
+    
 <div className="transfer-btn-container">
 <ViewAreaButton className={"cancel-transfer-btn small-border"} openArea={backToOrigin}  id={originId} areaName={areaName} buttonText={'Cancel Transfer'} generalArea={generalArea}/>
 

@@ -7,13 +7,6 @@ export  const BoxViewer = ({addBoxItem, closeBox, viewArea, container, deleteBox
 
     const [location, setLocation] = useState(areaSpecific) 
 
-    console.log(`
-    parentId: ${parentId}
-    sectionId: ${sectionId}
-    areaSpecific: ${areaSpecific}
-       `) 
-
-       console.log(container)
 // after a box has been created using the itemString sent from the form, the container is updated in state.  Then, when user clicks to view a box, the above 3 props are used when mapping the container to pull out location,  section and box name; they are used for when user clicks on a box so its items are displayed. 
 
     let locationContents;
@@ -59,9 +52,6 @@ locationContents.map((eachSection, sectionIndex) =>{ // map location sections
 
         // map section contents
         sectionContents.map((eachBox, eachBoxIndex) =>{
-console.log(eachBox)
-console.log(eachBox.box_name)
-console.log(areaSpecific)
             if(eachBox.box_name == areaSpecific){
     thisBoxIndex = eachBoxIndex
     thisBox = eachBox
@@ -99,7 +89,6 @@ console.log(areaSpecific)
     }
 
 
-console.log(boxPath)
 //----------------------------------------------------------------------------
 
 function createBoxItem (itemString) {
@@ -132,7 +121,6 @@ function testCloseSection (){
 // takes user back to sections where all boxes can be seen
 function backToBoxViewer () {
     // just takes the section name which is obviously common to any box path for the particular section. 
-    console.log(boxPath)
 closeBox(boxPath.section_name)
 }
 
@@ -146,7 +134,7 @@ let newBoxItems = [...boxPath.box_contents];
 // the this array is used to  render items contained in box contents or, if the array is empty, to render the message 'no items in this box' at the bottom of the new item form. 
 let numberOfItems = newBoxItems.length
 
-    console.log(newBoxItems)
+ 
 return (
     <>
 
@@ -160,35 +148,6 @@ let itemName = item.itemString;
 let itemId = item.id;
 let itemParentName = item.parent_Box; // note the accidental title case on this property (the capital 'B' of the word 'Box') this is the box name
 let itemParentId = item.parent_box_id; // this is the box id
-
-/*
-props sent to NewItem ~
-
-Strings: 
-item name
-item id
-box name
-box id
-
-Numbers: 
-box contents total
-
-Arrays: 
-box contents
-
-objects:
-box path
-
-
-
-
-Functions: 
-- item delete
-- transfer item
-
-The only reason why boxPath is needed is to provide an 'easy' pathway to the all of the items that are in the box content property of boxPath. 
-
-*/
 
 
 

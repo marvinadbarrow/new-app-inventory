@@ -3,6 +3,11 @@ import { useState } from "react"
 
 export const OptionSelect = ({chooseLabel, selectID, infoLevel1, areaName, infoSetter, infoSetter2, infoSetter3, container, infoLevel2, infoLevel3, boxDetails}) =>{
 
+    console.log('infoLevel1')
+    console.log(infoLevel1)
+
+    console.log('all other props')
+    console.log( infoLevel1, areaName, infoLevel2)
 const [defaultLocation, setDefaultLocation] = useState()
 // if info setter values are initially empty, then execute infoSetter with an object for BLACK CHEST to see if that will 
     
@@ -65,9 +70,15 @@ return (
    }
 
 { // if no selection has been made, display the word 'select' to hint next step to user
-   infoLevel1.hasOwnProperty('location_index') &&
+   !infoLevel1.hasOwnProperty('location_index') &&
    <option value="" className="default-option"  selected="selected">select</option>
    }
+
+{ // use this for the default selection when returning to the page after modifying box name. Find out how to do the default. 
+//    infoLevel1.hasOwnProperty('location_index') &&
+//    <option value="" className="default-option"  selected="selected">hi man</option>
+   }
+
 
             </select>
 </div>

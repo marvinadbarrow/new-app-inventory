@@ -1,20 +1,9 @@
 import { useState } from "react"
 import { v4 } from "uuid";
-export const DuplicateWarning = ({duplicateFound, newBoxName, setExistingDuplicates, applyBoxNameChange, setNewBoxName, setTransferApplied, setDuplicateFound, setSelectedSectionInfo, selectedSectionInfo, selectedLocationInfo, testContainer, setSelectedLocationInfo}) =>{
+export const DuplicateWarning = ({duplicateFound, newBoxName, setExistingDuplicates, applyBoxNameChange, setNewBoxName, setTransferApplied, setDuplicateFound, setSelectedSectionInfo, selectedSectionInfo, selectedLocationInfo, testContainer, setSelectedLocationInfo, attemptTransfer}) =>{
 
 
-const processDuplicate = (nameofNewBox) =>{
-    console.log('what select location should be')
-console.log(selectedLocationInfo)
-// set newBoxName as the name of the box
-applyBoxNameChange(nameofNewBox)
-  
-// setting existing duplicates to zero will cause the duplicates warning to disappear and will allow the 'apply transfer' button to re-appear which is necessary because, since there was a duplicate, the transfer did not complete; so the user will have to activate the transfer function again by hitting the transfer button once more.  Now that the box name has been changed and used to set new box, when apply transfer is clicked, the box will take the existing new name, and no  duplicate will be found, and this will allow the process to complete and transfer the box.
-setExistingDuplicates(0);
-setDuplicateFound('')
-
-}
-
+// cancel box name change
 const cancelBoxmNamechange = () =>{
     setExistingDuplicates(0) // reset duplicates number
     setDuplicateFound('') // reset duplicate name
@@ -26,9 +15,9 @@ const cancelBoxmNamechange = () =>{
     
     <div className="warning-message-element">
 <div className="duplicate-box-warning medium-border">
-    <b><em>WARNING - Duplicate box name exists:</em></b><br/>
+    <b><em>WARNING - Duplicate box at destination:</em></b><br/>
      <p className="duplicate-warning-para"> the box name: -   
-     <b><em className="warning-red"> {duplicateFound}</em></b>, already exists at the transfer destination<br/> Consider <em>modifying</em> the box name by <em>'adding a number'</em> at the end of the name to represent the order in which the box was placed in the destination
+     <b><em className="warning-red"> {duplicateFound}</em></b>, already exists at the transfer destination<br/> Modify the box name to proceed, or cancel to change destination
      </p>
 
 
@@ -69,13 +58,15 @@ return(
 <form action="" onSubmit={(e) =>{
         e.preventDefault();
 
-        // when user hits the submit button, if newBoxName (whatever was typed in to the input) has > 2 characters
+        // when user hits the submit button, check if newBoxName (whatever was typed in to the input) has > 2 characters
  if(newBoxName.length > 2){
 
-    // if the freshly typed  newBoxName is not the same as the the duplicateFound variable
+    //  then check if the freshly typed  newBoxName differs from the duplicateFound variable string
 if(newBoxName !== duplicateFound){
     // process the newBoxName input
-processDuplicate(newBoxName)
+    localStorage.setItem('modified_box_name',JSON.stringify(newBoxName))
+    applyBoxNameChange(newBoxName)
+    attemptTransfer('yes', 'test variable')
 }else{
     // otherwise inform user that the input is still a duplicate
     alert('new box name is still a duplicate of a box at the destination')}
@@ -92,16 +83,16 @@ processDuplicate(newBoxName)
  <input value={newBoxName} id='rename-input' type="text" placeholder={'New box name'} 
 onChange={e => setNewBoxName(e.target.value)} // as characters are typed, set new box name to input value which will appear in the input above
   />
-<button className="reset-duplicates navigation-btn origin" typeof="submit" >Apply Name Change</button>
+<button className="reset-duplicates navigation-btn origin box-name-change" typeof="submit" >Apply and Transfer</button>
 </form>
 
-<div className="cancel-item-rename-vid">
-    <p className="cancel-item-rename-para">cancel rename - select a different section or location</p>
+
+    {/* <p className="cancel-item-rename-para">cancel rename - select a different section or location</p> */}
     <button className="cancel-item-rename-btn" onClick={() =>{
         // if user changes their mind about renaming the item, they can cancel it with this button
         cancelBoxmNamechange()
     }}>cancel</button>
-</div>
+
 
 
 </div>

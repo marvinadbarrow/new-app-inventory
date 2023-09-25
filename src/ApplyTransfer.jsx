@@ -5,7 +5,7 @@ export const ApplyTransfer = ({attemptTransfer, processTransferItem, boxDetails}
 const transferAttempt = () =>{
         // go to execute attempt at transfer (pending satisfied conditions)
         attemptTransfer('yes')
-        processTransferItem(boxDetails)
+
 }
 
     return (<>

@@ -7,17 +7,20 @@ export const SelectElement = ({selectedLocationInfo, setSelectedLocationInfo, se
         //         "location_index": 0,
     //         "location_id": container[0].id,
     //         "location_name": container[0].location_name
-
+console.log(selectedLocationInfo)
 
 
     return (
         <>
         {
 // LOCATION SELECTOR
-
+/*
+saving below as it might be used for infoLevel1 prop later ---
+{"location_index": 0, "location_id": container[0].id, "location_name": container[0].location_name}
+*/
 transferApplied !== 'yes' && // if transfer applied not yet set show location select menu. Also, using infoLevel1 to set default values on location select to be the first location, i.e. BLACK CHEST.  
 <>
- <OptionSelect chooseLabel={'Choose a location'} selectID={'location.id'} infoLevel1={{"location_index": 0, "location_id": container[0].id, "location_name": container[0].location_name}} areaName={'location'} infoSetter={setSelectedLocationInfo} container={container} infoSetter2={setSelectedSectionInfo}  infoSetter3={setSelectedBoxInfo}/> 
+ <OptionSelect chooseLabel={'Choose a location'} selectID={'location.id'} infoLevel1={''} areaName={'location'} infoSetter={setSelectedLocationInfo} container={container} infoSetter2={setSelectedSectionInfo}  infoSetter3={setSelectedBoxInfo}/> 
 
 
 
