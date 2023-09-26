@@ -803,7 +803,7 @@ console.log(newContainer)
 // newcontainer[6] = newLocation // REPLACE OBJECT
 
 
-// setContainer(newContainer)
+setContainer(newContainer)
 
 
 // console.log('edited section')

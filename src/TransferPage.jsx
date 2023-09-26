@@ -341,11 +341,11 @@ console.log('processing box transfer .... line: 362 - TransferPage')
 
     })
 
-    if(modifiedBoxName == ''){ // if modified box name is an empty string (default)
+    if(!localStorage.getItem('modified_box_name')){ // if modified box name is an empty string (default)
         console.log('no modified name present')
         originBoxName = originBoxName    
     }else{ // modified box name exists
-        originBoxName = modifiedBoxName
+        originBoxName = localStorage.getItem('modified_box_name')
 console.log('line 304')
 console.log(' modified box name exists')
 console.log('modifiedBoxName: ' + originBoxName)
@@ -371,6 +371,7 @@ testContainer.map((location, locationIndex) =>{
     }
 
 })
+
 
 // object containing origin and destination details of transfer box
 let transitObj ={
@@ -427,7 +428,7 @@ let newBoxDetails = {
    "parent_container_id": transitObj.locB_id,
     "parent_section_name": transitObj.secB_name, 
     "location_name": transitObj.locB_name,
-    "section_id": transitObj.secB_index
+    "section_id": transitObj.secB_id
 }
 
 
@@ -442,13 +443,19 @@ let newBoxContents = []
 
 transitObj.box_details.box_contents.map(contents =>{
     // create object and assign property values
-let newItemObject = {
 
-"id": contents.id,
-"itemString": contents.itemString,
-"parent_Box": originBoxName, 
-"parent_box_id": contents.parent_box_id
-}
+
+let  newItemObject = {
+
+    "id": contents.id,
+    "itemString": contents.itemString,
+    "parent_Box": originBoxName, 
+    "parent_box_id": contents.parent_box_id
+    }
+
+
+
+
 
 // push object to newBoxContents
 newBoxContents.push(newItemObject)
@@ -478,18 +485,24 @@ let tempArray = []
 justBoxItems.map(item =>{
 // create a new object  for each item in the box, keep details not needing modification, but update section and location details to reflect the destination details
 let newItem;
+let newModifiedBoxName;
+
 
 // if modified box name exists use 'that' for parent box name of item 
-if(modifiedBoxName !== undefined || modifiedBoxName !==''){
+if(localStorage.getItem('modified_box_name')){
+console.log('stored new box name')
+console.log(localStorage.getItem('modified_box_name'))
+newModifiedBoxName = localStorage.getItem('modified_box_name')
+
     console.log('modified name exists')
-    console.log(modifiedBoxName)
+    console.log(newModifiedBoxName)
     newItem = {
         'item_name':item.item_name,
     'location_id':transitObj.locB_id, 
     'item_object':{
         'id':item.item_id,
         'itemString':item.item_name,
-        'parent_Box':modifiedBoxName,
+        'parent_Box':newModifiedBoxName,
         'parent_box_id': item.box_id,
     },
     'section_id': transitObj.secB_id,
@@ -523,32 +536,6 @@ tempArray.push(newItem)
 // merge new array missing box item details with temp array containing the objects now altered. This will replace the original AllItemsArray
 let completedNewArray = [...arrayWithoutItems, ...tempArray]
 
-// checking for duplicates
-let duplicates = 0; // assume no duplicate exists
-let duplicateName; // variable for duplicate name (only one is needed to stop the process)
-
-
-// map destination section
-transitObj.destination.section_contents.map(boxes =>{
-    //  If any of its box names matches the transfer box name, increment the 'duplicates' variable
-    if(boxes.box_name == transitObj.boxA_name){
-        console.log('duplicate box name found')
-        duplicates +=1;
-        duplicateName = boxes.box_name
-    }
-})
-
-// if a duplicate exists
-if(duplicates > 0){
-    setExistingDuplicates(1) // hides the 'apply transfer' button and shows duplicate warning element. 
-    setTransferApplied('no') // keep post-transfer navigation buttons hidden
-    setDuplicateFound(duplicateName) // duplicate name string for display in warning
-}
-else{ // no duplicate exists
-
-    setNewBoxName('') // reset newBoxName
-
-    setModifiedBoxName('') // reset modified box name
 setTestContainer(draft =>{
     // push box object to new section contents
     draft[transitObj.locB_index].location_contents[transitObj.secB_index].section_contents.push(newBoxDetails)
@@ -559,11 +546,11 @@ setTestContainer(draft =>{
 });
 // replace original AllItemsArray with the new one where objects associated with the transferbox have had their details edited to match the destination details. 
 setTestAllItemsArray(completedNewArray)
-   }
-
-{
-    // alert will run and adjustment box will pop up
-}
+   
+// clear modified box name if one exists
+// if(modifiedBoxName !==''){
+//     setModifiedBoxName('') // reset modified box name
+// }
 
 }
 
@@ -618,9 +605,9 @@ function applyBoxNameChange(modifiedName){
         console.log('modified name exists')
         console.log(modifiedName)
         setModifiedBoxName(modifiedName)
-// attemptTransfer('yes')
 setExistingDuplicates(0);
 setDuplicateFound('')
+attemptTransfer('yes', 'test variable')
     }
         else{
             // modified name isn't processing (find out why)

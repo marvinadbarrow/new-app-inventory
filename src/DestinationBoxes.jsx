@@ -51,7 +51,7 @@ if(box.box_name == sectionItems.box_name){
 
 else{ // TRANSFER IS HAS BEEN APPLIED
 if(localStorage.getItem('modified_box_name')){ // if a modified box name is saved to local storage
-let modified = JSON.parse(localStorage.getItem('modified_box_name'))
+let modified = localStorage.getItem('modified_box_name')
    // search for destination box that has modified name
         if(box.box_name == modified){ 
 

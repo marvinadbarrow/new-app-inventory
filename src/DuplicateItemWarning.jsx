@@ -80,7 +80,14 @@ if(duplicatedNewName > 0){
  // update the input value characters are types
  onChange={e => setNewItemName(e.target.value)}
   />
+
+
+  
 <button className="reset-duplicates navigation-btn origin item-name-change" typeof="submit" >Apply Name Change</button>
+
+
+
+
 </form>
 
 

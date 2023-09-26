@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { v4 } from "uuid";
 export const DuplicateWarning = ({duplicateFound, newBoxName, setExistingDuplicates, applyBoxNameChange, setNewBoxName, setTransferApplied, setDuplicateFound, setSelectedSectionInfo, selectedSectionInfo, selectedLocationInfo, testContainer, setSelectedLocationInfo, attemptTransfer}) =>{
-
+const [newerBoxName, setNewerBoxName] = useState('')
 
 // cancel box name change
 const cancelBoxmNamechange = () =>{
@@ -56,10 +56,10 @@ return(
         e.preventDefault();
 
         // when user hits the submit button, check if newBoxName (whatever was typed in to the input) has > 2 characters
- if(newBoxName.length > 2){
+ if(newerBoxName.length > 2){
 
     //  then check if the freshly typed  newBoxName differs from the duplicateFound variable 
-if(newBoxName !== duplicateFound){
+if(newerBoxName !== duplicateFound){
 
 {
 //then  map through the destionation to see whether the new box name duplicates any of the other boxes
@@ -68,7 +68,7 @@ let furtherDuplicates = 0;
 testContainer[selectedLocationInfo.location_index].location_contents[selectedSectionInfo.section_index].section_contents.map(boxes =>{
 
     // if the new name matches the currently assessed box name, alert user
-    if(boxes.box_name == newBoxName){
+    if(boxes.box_name == newerBoxName){
         furtherDuplicates +=1
     }else{ 
         furtherDuplicates = furtherDuplicates 
@@ -79,9 +79,9 @@ testContainer[selectedLocationInfo.location_index].location_contents[selectedSec
         if(furtherDuplicates > 0){ // new name duplicates another box name
             alert('new box name is still a duplicate of a box at the destination: try a different name')
         }else{ // no duplicate found
-            localStorage.setItem('modified_box_name',JSON.stringify(newBoxName))
-            applyBoxNameChange(newBoxName)
-            attemptTransfer('yes', 'test variable')
+            localStorage.setItem('modified_box_name', newerBoxName)
+            applyBoxNameChange(newerBoxName)
+
         }
     }
 
@@ -100,11 +100,24 @@ testContainer[selectedLocationInfo.location_index].location_contents[selectedSec
 
  <label htmlFor="rename-input">{'Modify Box Name'}</label>
  
- <input value={newBoxName} id='rename-input' type="text" placeholder={'New box name'} 
-onChange={e => setNewBoxName(e.target.value)} // as characters are typed, set new box name to input value which will appear in the input above
+ <input value={newerBoxName} id='rename-input' type="text" placeholder={'New box name'} 
+onChange={e => setNewerBoxName(e.target.value)} // as characters are typed, set new box name to input value which will appear in the input above
   />
+
+
+
 <button className="reset-duplicates navigation-btn origin box-name-change" typeof="submit" >Apply and Transfer</button>
+
+
+
+
+
 </form>
+
+
+
+
+
 
 
     {/* <p className="cancel-item-rename-para">cancel rename - select a different section or location</p> */}
