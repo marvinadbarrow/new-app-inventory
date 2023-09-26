@@ -41,9 +41,6 @@ if(boxes.box_name == duplicateFound){
 return(
     <li key={boxes.id} className={nameOfClass}>{boxes.box_name}</li>
 )
-
-
-
         
     })
 }
@@ -61,18 +58,41 @@ return(
         // when user hits the submit button, check if newBoxName (whatever was typed in to the input) has > 2 characters
  if(newBoxName.length > 2){
 
-    //  then check if the freshly typed  newBoxName differs from the duplicateFound variable string
+    //  then check if the freshly typed  newBoxName differs from the duplicateFound variable 
 if(newBoxName !== duplicateFound){
-    // process the newBoxName input
-    localStorage.setItem('modified_box_name',JSON.stringify(newBoxName))
-    applyBoxNameChange(newBoxName)
-    attemptTransfer('yes', 'test variable')
+
+{
+//then  map through the destionation to see whether the new box name duplicates any of the other boxes
+
+let furtherDuplicates = 0;
+testContainer[selectedLocationInfo.location_index].location_contents[selectedSectionInfo.section_index].section_contents.map(boxes =>{
+
+    // if the new name matches the currently assessed box name, alert user
+    if(boxes.box_name == newBoxName){
+        furtherDuplicates +=1
+    }else{ 
+        furtherDuplicates = furtherDuplicates 
+            // process the the new box name
+    }  
+                      })
+
+        if(furtherDuplicates > 0){ // new name duplicates another box name
+            alert('new box name is still a duplicate of a box at the destination: try a different name')
+        }else{ // no duplicate found
+            localStorage.setItem('modified_box_name',JSON.stringify(newBoxName))
+            applyBoxNameChange(newBoxName)
+            attemptTransfer('yes', 'test variable')
+        }
+    }
+
+
+
 }else{
     // otherwise inform user that the input is still a duplicate
     alert('new box name is still a duplicate of a box at the destination')}
 
 }else{
-        // otherwise inform user that new name is too short
+        // otherwise inform user that new name is too short and must have more than two characters
     alert('please rename the box with more than two characteres')}
 
    }} className="rename-box-form">

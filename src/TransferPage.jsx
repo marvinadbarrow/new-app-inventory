@@ -210,8 +210,8 @@ boxOrig.map((objects, objectsIndex) =>{
 
 
 //after using the original item name (itemNamestring) to find object at the original location and to get item id, check if a modified item name exists and if so, change the name to the value of the modifiedItemName variable; it can then be used to modify the item for transfer so it no longer conflicts with an item of the same name at destionation, and so that the correct item name is in allItemsArray so it turns up as a correctly named search result. 
-if(modifiedItemName !== ''){
-    itemNamestring = modifiedItemName
+if(localStorage.getItem('modified_item_name')){
+    itemNamestring = localStorage.getItem('modified_item_name')
    }
 
 
@@ -284,39 +284,7 @@ testAllItemsArray.map((objects, indexOfObject) =>{
 
     }
  
-
-
-
-
-
 }
-
-// back to origin, pre or post tranfer
-function backToOrigin(general, specific, id){
-
-    if(boxDetails.hasOwnProperty('new_item_string')){ 
-// if the transfer object is an item, then section id and location id are not needed because they are already set. 
-openBox(general, specific, id, boxDetails )    
-
-       }else{ 
-       
-        setDuplicateFound('')
-        
-        // no properties in box details - an entire box is being transferred
-openSection(general, specific, id)
-       }    
-    }
-
-// go to destination,  post tranfer
-function goToDestination(general, specific, id){
-    if(boxDetails !== undefined){
-        let itemName = '' // parameter not needed
-        let sectionId = selectedSectionInfo.section_id;
-        let parentId = selectedLocationInfo.location_id;
-        openBox(general, specific, id, itemName, sectionId, parentId) 
-        }
-}
-
 
 
 // when a destination section is selected in options menu for a transfer box, map through the section to check for boxes that duplicate the transfer box name
@@ -457,7 +425,9 @@ let newBoxDetails = {
     "box_name":transitObj.boxA_name, 
     "id":transitObj.boxA_id,
    "parent_container_id": transitObj.locB_id,
-    "parent_section_name": transitObj.secB_name
+    "parent_section_name": transitObj.secB_name, 
+    "location_name": transitObj.locB_name,
+    "section_id": transitObj.secB_index
 }
 
 
@@ -607,8 +577,8 @@ if(boxDetails !== ''){ // if box details exist,  transfer object is an item
 // if a box name is selected in the 'box' options menu
     if(selectedBoxInfo.box_name){ // accept transfer
 
-// log if function was executed with modified ITEM  name or not
-modifiedItemName !==''?console.log('ITEM name was modified for transfer'): console.log('ITEM name was not modified for transfer')
+// if a modified_item_name lable exists in local storage it will be used to change item name
+localStorage.getItem('modified_item_name') ?console.log('ITEM name was modified for transfer'): console.log('ITEM name was not modified for transfer')
 
 setTransferApplied(confirm)
 
@@ -669,6 +639,8 @@ function applyItemNameChange(modifiedName){
         setModifiedItemName(modifiedName)
 setDuplicateItemExists(0); // reset duplicates so that item can be transferred
 setDuplicateFound('') // reset duplicate name
+attemptTransfer('yes', 'test variable') // this should ensure new name is set before transfer is attempted
+
     }
         else{
             // modified name isn't processing (find out why)
@@ -677,6 +649,33 @@ setDuplicateFound('') // reset duplicate name
 
 }
 
+
+
+// back to origin, pre or post tranfer
+function backToOrigin(general, specific, id){
+
+    if(boxDetails.hasOwnProperty('new_item_string')){ 
+// if the transfer object is an item, then section id and location id are not needed because they are already set. 
+openBox(general, specific, id, boxDetails )    
+
+       }else{ 
+       
+        setDuplicateFound('')
+        
+        // no properties in box details - an entire box is being transferred
+openSection(general, specific, id)
+       }    
+    }
+
+// go to destination,  post tranfer
+function goToDestination(general, specific, id){
+    if(boxDetails !== undefined){
+        let itemName = '' // parameter not needed
+        let sectionId = selectedSectionInfo.section_id;
+        let parentId = selectedLocationInfo.location_id;
+        openBox(general, specific, id, itemName, sectionId, parentId) 
+        }
+}
 
 
 
@@ -710,7 +709,7 @@ existingDuplicates > 0  &&
 {
 // if duplicate item exists then show warning popup
 duplicateItemExists > 0 &&
-<DuplicateItemWarning setDuplicateItemExists={setDuplicateItemExists} duplicateFound={duplicateFound} modifiedItemName={modifiedItemName} applyItemNameChange={applyItemNameChange} setSelectedSectionInfo={setSelectedSectionInfo} setSelectedBoxInfo={setSelectedBoxInfo} setDuplicateFound={setDuplicateFound} attemptTransfer={attemptTransfer}/>
+<DuplicateItemWarning setDuplicateItemExists={setDuplicateItemExists} duplicateFound={duplicateFound} modifiedItemName={modifiedItemName} applyItemNameChange={applyItemNameChange} setSelectedSectionInfo={setSelectedSectionInfo} setSelectedBoxInfo={setSelectedBoxInfo} setDuplicateFound={setDuplicateFound} attemptTransfer={attemptTransfer} selectedSectionInfo={selectedSectionInfo} selectedLocationInfo={selectedLocationInfo} testContainer={testContainer} selectedBoxInfo={selectedBoxInfo}/>
 }
 
 

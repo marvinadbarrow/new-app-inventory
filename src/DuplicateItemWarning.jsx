@@ -1,9 +1,16 @@
 import { useState } from "react"
 
-export const DuplicateItemWarning = ({duplicateFound, modifiedItemName, setDuplicateItemExists, applyItemNameChange, SetCancelRename, setSelectedSectionInfo, setSelectedBoxInfo, setDuplicateFound, attemptTransfer }) =>{
+export const DuplicateItemWarning = ({duplicateFound, modifiedItemName, setDuplicateItemExists, applyItemNameChange, SetCancelRename, setSelectedSectionInfo, setSelectedBoxInfo, setDuplicateFound, attemptTransfer, selectedLocationInfo, selectedSectionInfo, selectedBoxInfo, testContainer }) =>{
 const [newItemName, setNewItemName] = useState('')
 
+let destinationBox; // variable for destination box
 
+// if all destination objects are not empty strings
+if(selectedLocationInfo !=='' && selectedSectionInfo !=='' && selectedBoxInfo !==''){
+
+    // locate the destionation box and set it as the value of the 'destnationBox' variable
+destinationBox =  testContainer[selectedLocationInfo.location_index].location_contents[selectedSectionInfo.section_index].section_contents[selectedBoxInfo.box_index].box_contents
+}
 
 
 function cancelItemNamechange(){
@@ -37,9 +44,28 @@ function cancelItemNamechange(){
 
     // if the newly typed item name is not the same as the duplicate
 if(newItemName !== duplicateFound){
-    // send the input name for processing; to be set as modifiedItem name
+
+    let duplicatedNewName = 0;
+// map through destination box to make sure none of the 'other' items duplicate the new name
+destinationBox.map(items =>{
+    // if a duplicates is found, increment duplicatedNewName
+    if(items.itemString == newItemName){
+        duplicatedNewName +=1
+    }else{ // otherwise keep current number
+        duplicatedNewName = duplicatedNewName
+    }
+})
+
+// if duplicatedNewName > 0,  a duplicate was found so alert user
+if(duplicatedNewName > 0){
+    alert('new item name is still a duplicate of an item at the destination: try a different name')
+}else{
+    localStorage.setItem('modified_item_name', newItemName)
+    //  otherwise, no duplicate was found so procede
     applyItemNameChange(newItemName)
-    attemptTransfer('yes', 'test variable')
+  
+}
+
 }else{
  // otherwise advise user that the name is still a duplication   
     alert('new item name is still a duplicate of a item at the destination')}
