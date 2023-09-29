@@ -358,7 +358,7 @@ select{font-size: var(--btn-font-small);}
 .user-guide-para{font-size: var(--btn-font-large); color: var(--font-color-light-blue);}
 .video-list{padding: 0px; width: 90%; display: flex; flex-direction: row; flex-wrap: wrap; justify-content: space-around;}
 .vid-button{font-size: var(--btn-font-small); display: inline; margin: var(--element-margin-bottom-small) 0px;}
-.vid-player-div{width: fit-content; height: auto;}
+.vid-player-div{width: fit-content; height: fit-content; margin: auto;}
 .video-title{font-size: var(--btn-font-large);}
 .area-title{font-size: var(--para-font-size-medium);}
 .item-unordered-list{padding-left: 0px;}
@@ -366,7 +366,10 @@ select{font-size: var(--btn-font-small);}
 .box-names-div{background-color: rgb(180, 177, 177); margin: auto; width: fit-content; height: auto; border-radius: var(--border-rad-small); padding: 2% 4%;}
 .warn-elem-dest-heading{color: white;}
 .box-name-change, .item-name-change{color: var(--font-color-red); background-color: var(--backgnd-color-yellow);}
+.vid-btn-blue{background-color: rgb(74, 180, 241);}
 
 
 
 .apply-transfer-btn,  .cancel-item-rename-btn, .cancel-transfer-btn, .origin, .destination{border: solid var(--border-color-white); font-size: var(--btn-font-medium); margin-bottom: var(--element-margin-bottom-large);}
+
+.video-btn-holder{width: 80%; height: auto; display: flex; flex-direction: row; flex-wrap: wrap; justify-content: space-around;}

@@ -6,6 +6,15 @@ const [search, setSearch] = ('')
 
 export  const StartPage = ({viewArea, openSearch, openAllLocations, fixLocationId, openUserGuide}) =>{
 
+    function inventoryImport(){
+console.log('importing inventory...')
+    }
+
+function inventoryBackup(){
+    console.log('backing up inventory...')
+        }
+
+
 
     return(
     <>
@@ -16,6 +25,8 @@ export  const StartPage = ({viewArea, openSearch, openAllLocations, fixLocationI
 viewArea == "start page" && 
 <>
 <div className='start-page-btns-div'>
+
+
 <button className="start-page-btns" onClick={() =>{openSearch("search page");
 }}>Search Items </button> 
 
@@ -26,6 +37,14 @@ viewArea == "start page" &&
 
 // fixLocationId()
 }}>Video userguide</button>
+
+
+
+<button className="start-page-btns" onClick={() =>{inventoryImport();
+}}>Import Inventory</button> 
+
+<button className="start-page-btns" onClick={() =>{inventoryBackup();
+}}>Backup Inventory</button> 
 </div>
 
 </>

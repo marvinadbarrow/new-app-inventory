@@ -151,6 +151,7 @@ let newObject = {
     "box_id": e.target.value,
     "box_name": boxes.box_name
    }
+
 setInfo3(newObject)
 
                         // destinationBox = `Box: ${boxes.box_name}`

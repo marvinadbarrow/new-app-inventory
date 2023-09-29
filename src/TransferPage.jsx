@@ -136,16 +136,28 @@ destinationId = selectedBoxInfo.box_id
 // when a destination box is selected for a transfer item, map through the box to check for duplicates item names
   useEffect(() =>{
 if(boxDetails !== undefined){
-     if(selectedBoxInfo.box_index){
 
+
+     if(selectedBoxInfo !==''){
+let duplicatePLurality = 0; 
     testContainer[selectedLocationInfo.location_index].location_contents[selectedSectionInfo.section_index].section_contents[selectedBoxInfo.box_index].box_contents.map(contents =>{
-
+        console.log('all the items - line 144')
+console.log(contents.itemString)
         if(contents.itemString == boxDetails.new_item_string){
-setDuplicateItemExists(1) // set duplicate greater than zero
-setDuplicateFound(boxDetails.new_item_string) // sets name of duplicate (transfer box name)
+            console.log('duplicate item name - line 147')
+            console.log(contents.itemString)
+duplicatePLurality += 1
+
         }
          })
-  
+
+// if duplicates exist then render warning element
+  if(duplicatePLurality > 0){
+    setDuplicateItemExists(1) // set duplicate greater than zero
+setDuplicateFound(boxDetails.new_item_string) // sets name of duplicate (transfer box name)
+  }else{console.log('there are no duplicates')}
+
+
     }
 }
       }, [selectedBoxInfo])
@@ -302,9 +314,6 @@ setExistingDuplicates(1) // set duplicate greater than zero
 setDuplicateFound(sectionItems.box_name) // sets name of duplicate (transfer box name)
         }
          })
-
-
-
 
 }
      

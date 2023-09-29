@@ -5,70 +5,62 @@ import ReactPlayer from 'react-player'
  
 
 
-export const VideoShelf = ({}) =>{
+export const VideoShelf = ({setVidUrl, setVidTitle}) =>{
 
 // props for the player are set by clicking any button below the player which sends the URL to the video dealing with the button subject.  The function then sets the url in state. 
-const [vidUrl, setVidUrl] = useState('')
-const [vidTitle, setVidTitle] = useState('')
-
 function setVideoProps(vidPath, vidTitle){
-setVidUrl(vidPath)
-setVidTitle(vidTitle)
-}
-
+    setVidUrl(vidPath)
+    setVidTitle(vidTitle)
+    }
 
     return(
         <>
 
-
-
-
-
 <div className="video-list">
+<div className="video-btn-holder">
 
-<div className="vid-player-div">
-<ReactPlayer width="640" height="360" url={vidUrl} controls={true}/>
-<p className="video-title">{vidTitle}</p>
-</div>   
-
-<button className="vid-button" onClick={() =>{
-setVideoProps('../draft videos/create areas.mp4', 'Create areas')
-}}>Create areas</button>
-
+<button className="vid-button vid-btn-blue" onClick={() =>{
+setVideoProps('https://youtu.be/1kRvDypXnEA', 'Getting Started!')
+}}>Getting Started</button>
 
 <button className="vid-button" onClick={() =>{
-setVideoProps('../draft videos/search.mp4', 'Delete areas')
-}}>Delete areas</button>
-
+setVideoProps('https://youtu.be/XBIJ9SDVRLc', 'Create locations')
+}}>Create locations</button>
 
 <button className="vid-button" onClick={() =>{
-setVideoProps('../draft videos/search.mp4', 'Create Items')
+setVideoProps('https://youtu.be/7PGRWb5Kmlk', 'Create sections')
+}}>Create sections</button>
+
+<button className="vid-button" onClick={() =>{
+setVideoProps('https://youtu.be/IacBztoi4nI', 'Create boxes')
+}}>Create boxes</button>
+
+<button className="vid-button" onClick={() =>{
+setVideoProps('https://youtu.be/GjIK8TUN1kc', 'Create Items')
 }}>Create items</button>
 
-
 <button className="vid-button" onClick={() =>{
-setVideoProps('../draft videos/search.mp4', 'Delete items')
-}}>Delete items</button>
-
-
-<button className="vid-button" onClick={() =>{
-setVideoProps('../draft videos/search.mp4', 'Transfer items')
+setVideoProps('https://youtu.be/HaHMB27-4Fo', 'Transfer items')
 }}>Transfer items</button>
 
-
 <button className="vid-button" onClick={() =>{
-setVideoProps('../draft videos/search.mp4', 'Transfer boxes')
+setVideoProps('https://youtu.be/id1mw-wyUpQ', 'Transfer boxes')
 }}>Transfer boxes</button>
 
+<button className="vid-button" onClick={() =>{
+setVideoProps('https://youtu.be/K8uWidY9q24', 'View all section items')
+}}>View entire section</button>
 
 <button className="vid-button" onClick={() =>{
-setVideoProps('../draft videos/search.mp4', 'View all items')
-}}>View all items</button>
-
-
-<button className="vid-button" onClick={() =>{
-setVideoProps('../draft videos/test recording.mp4', 'Search Items')
+setVideoProps('https://youtu.be/fSDr-TVr6sA', 'Search Items')
 }}>Search items</button>
+
+<button className="vid-button" onClick={() =>{
+setVideoProps('https://youtu.be/upuDD93LXSA', 'Delete areas')
+}}>Delete elements</button>
+
+</div>
+
 </div>
            </>
     )
