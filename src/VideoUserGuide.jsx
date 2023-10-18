@@ -4,6 +4,8 @@ import { BackToStartButton } from "./BackToStartButton"
 import { VideoShelf } from "./VideoShelf"
 import { useState } from "react";
 import ReactPlayer from "react-player";
+
+
 export const VideoUserGuide = ({returnToStart, openSearch, openAllLocations}) =>{
 
 function backToStart(){

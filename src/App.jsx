@@ -16,6 +16,11 @@ import { TransferPage } from './TransferPage'
 import { VideoUserGuide } from "./VideoUserGuide";
 import { VideoShelf } from './VideoShelf'
 
+
+
+
+
+
 // localStorage.clear()
 
 function App() {
@@ -55,7 +60,7 @@ if(whatsStored == null){ // if no locations exist
   // useEffect will update local storage when container array is changed. 
   useEffect(() =>{
     localStorage.setItem('storage_containers', JSON.stringify(container));
-  }, [container])
+    }, [container])
 
   useEffect(() =>{
     localStorage.setItem('all_items', JSON.stringify(allItemsArray));
@@ -63,6 +68,8 @@ if(whatsStored == null){ // if no locations exist
 
 
 console.log(container)
+
+
 
 
     // keeping a copy of all items array in local storage since I almost deleted it. 
@@ -838,7 +845,7 @@ setContainer(newContainer)
 }
 
 {viewArea == "start page" && 
-<StartPage viewArea={viewArea} openSearch={openSearch}  openAllLocations={openAllLocations} fixLocationId={fixLocationId} openUserGuide={openUserGuide}/>
+<StartPage viewArea={viewArea} openSearch={openSearch}  openAllLocations={openAllLocations} fixLocationId={fixLocationId} openUserGuide={openUserGuide} container={container} allItemsArray={allItemsArray}/>
 }
 
 

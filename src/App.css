@@ -373,3 +373,8 @@ select{font-size: var(--btn-font-small);}
 .apply-transfer-btn,  .cancel-item-rename-btn, .cancel-transfer-btn, .origin, .destination{border: solid var(--border-color-white); font-size: var(--btn-font-medium); margin-bottom: var(--element-margin-bottom-large);}
 
 .video-btn-holder{width: 80%; height: auto; display: flex; flex-direction: row; flex-wrap: wrap; justify-content: space-around;}
+
+.backup-img{width: 30px;}
+.import-img{width: 20px;}
+.button-para{font-size: var(--btn-font-large); margin: 2px;}
+.backup-btn, .import-btn{padding: 0px 4px;}
