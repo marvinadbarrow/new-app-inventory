@@ -9,12 +9,12 @@ export  const StartPage = ({viewArea, openSearch, openAllLocations, fixLocationI
 
 console.log(saveImg)
 // location of saved text backup
-const backupText = '../container backup/containerBackup.txt';
-const backupItems = '../container backup/itemsBackup.txt';
+const backupInventory = '../container backup/containerBackup2.txt';
+const backupAllItems = '../container backup/itemsBackup.txt';
     function inventoryImport(){
 
-        // inventory backup
-fetch(backupText) // fetch text (promise)
+        // inventory import
+fetch(backupInventory) // fetch text (promise)
 .then(resp => resp.text()) // returning response as text
 .then(data =>{// deal with data that comes back from promise
     console.log('importing inventory...')
@@ -26,7 +26,7 @@ fetch(backupText) // fetch text (promise)
 
 
 // all items backup
-fetch(backupItems)
+fetch(backupAllItems)
 .then(resp => resp.text())
 .then(data =>{
 console.log('importing all items...')
@@ -38,7 +38,8 @@ console.log('importing all items...')
     }
 
 
-
+let stringifiedContainer = [JSON.stringify(container)]
+// console.log(stringifiedContainer)
 
 
 function inventoryBackup(){
@@ -46,7 +47,7 @@ function inventoryBackup(){
     // TEMPORARY BACKUP FOR INVENTORY
 
     const element = document.createElement('a')
-    const backupFile = new Blob([JSON.stringify(container)], {type:'text/plain'})
+    const backupFile = new Blob(stringifiedContainer, {type:'text/plain'})
     element.href = URL.createObjectURL(backupFile)
     element.download = 'backupFile.txt'
     document.body.appendChild(element)
@@ -88,12 +89,19 @@ viewArea == "start page" &&
 }}>Video userguide</button>
 
 
+<button className="start-page-btns backup-btn" onClick={() =>{inventoryBackup();
+}}><p className='button-para'>Backup Inventory</p><img className='backup-img' src={saveImg}></img></button> 
 
 <button className="start-page-btns import-btn" onClick={() =>{inventoryImport();
 }}><p className='button-para'>Import Inventory</p><img className='import-img' src={importImg}></img></button> 
 
-<button className="start-page-btns backup-btn" onClick={() =>{inventoryBackup();
-}}><p className='button-para'>Backup Inventory</p><img className='backup-img' src={saveImg}></img></button> 
+<button className="start-page-btns use-import-btn" onClick={() =>{inventoryImport();
+
+}}><p className='button-para'>Use Imported Inventory</p></button>
+<div className="use-import-div">
+<p className="use-import-warning">WARNING: This action will replace the current inventory with the imported one. If the imported inventory is from another device, it is advisable that you backup this device's inventory first, and store it for safe keeping, so you can restore it if you need to</p>
+</div>
+
 </div>
 
 </>

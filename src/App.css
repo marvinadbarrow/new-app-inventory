@@ -41,6 +41,7 @@
   --button-go-forward-color: rgb(134, 207, 24);
   --button-go-back-color: red;
   --button-delete-color: red;
+  --button-neutral-color-blue:#646cff;
 
   --text-clr-origin:rgb(248, 62, 62);
   --text-clr-destination: rgb(134, 207, 24);
@@ -378,3 +379,7 @@ select{font-size: var(--btn-font-small);}
 .import-img{width: 20px;}
 .button-para{font-size: var(--btn-font-large); margin: 2px;}
 .backup-btn, .import-btn{padding: 0px 4px;}
+
+.use-import-btn{background-color: var(--button-neutral-color-blue);}
+.use-import-warning{color: var(--button-go-back-color);}
+.use-import-div{background-color: white; width: 80%; border-radius: var(--border-rad-medium);}
