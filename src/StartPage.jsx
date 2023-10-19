@@ -3,38 +3,61 @@ import './App.css'
 import{v4} from 'uuid'
 import { SearchForm } from './SearchForm'
 const [search, setSearch] = ('')
+import { ImportModal } from './ImportModal'
+
+
+
+
+
+
 import saveImg from '../images/save icon.png'
 import importImg from '../images/import icon.png'
 export  const StartPage = ({viewArea, openSearch, openAllLocations, fixLocationId, openUserGuide, container, allItemsArray}) =>{
 
-console.log(saveImg)
+  // the below variables never change - they are part of the backup file names for container and all items backups. 
+  const inventoryTextName = 'INVENTORY Backup - '
+  const allItemsTextName = 'ALL ITEMS Backup - '
+
+
+// state for import modal activation: 
+const [importInventory, setImportInventory] = useState('')
+
+
+
 // location of saved text backup
 const backupInventory = '../container backup/containerBackup2.txt';
 const backupAllItems = '../container backup/itemsBackup.txt';
+
+
+
+// IMPORT a backup inventory
     function inventoryImport(){
+      setImportInventory('import')
 
-        // inventory import
-fetch(backupInventory) // fetch text (promise)
-.then(resp => resp.text()) // returning response as text
-.then(data =>{// deal with data that comes back from promise
-    console.log('importing inventory...')
-  console.log((JSON.parse(data))) // parse for display in console
-})
-.catch(err =>{
-  console.log(err)
-})
+        // inventory BACKUP
+// fetch(backupInventory) // fetch text (promise)
+// .then(resp => resp.text()) // returning response as text
+// .then(data =>{// deal with data that comes back from promise
+//     console.log('importing inventory...')
+//   console.log((JSON.parse(data))) // parse for display in console
+// })
+// .catch(err =>{
+//   console.log(err)
+// })
 
 
-// all items backup
-fetch(backupAllItems)
-.then(resp => resp.text())
-.then(data =>{
-console.log('importing all items...')
-  console.log((JSON.parse(data)))
-})
-.catch(err =>{
-  console.log(err)
-})
+// all items BACKUP
+// fetch(backupAllItems)
+// .then(resp => resp.text())
+// .then(data =>{
+// console.log('importing all items...')
+//   console.log((JSON.parse(data)))
+// })
+// .catch(err =>{
+//   console.log(err)
+// })
+
+
     }
 
 
@@ -42,25 +65,44 @@ let stringifiedContainer = [JSON.stringify(container)]
 // console.log(stringifiedContainer)
 
 
+// INVENTORY BACKUP FILENAMES
+
+
+
+
+
+
+// INVENTORY BACKUP 
 function inventoryBackup(){
+
+
+
+// precise backup time is only needed for backup filenames at the actual time a backup is requested so they can live here. 
+  let dateTest = new Date(Date.now())
+let backupDate = dateTest.toUTCString().replaceAll(':', '-').replaceAll(',', '')
+let inventoryBackupFileName = inventoryTextName + backupDate + '.txt'
+let allItemsBackupFileName = allItemsTextName + backupDate + '.txt'
+
+
     console.log('backing up inventory...')
     // TEMPORARY BACKUP FOR INVENTORY
 
-    const element = document.createElement('a')
+    const containerElement = document.createElement('a')
     const backupFile = new Blob(stringifiedContainer, {type:'text/plain'})
-    element.href = URL.createObjectURL(backupFile)
-    element.download = 'backupFile.txt'
-    document.body.appendChild(element)
-    element.click()
+    containerElement.href = URL.createObjectURL(backupFile)
+    containerElement.download = inventoryBackupFileName
+    document.body.appendChild(containerElement)
+    containerElement.click()
 
 
 
-    const element2 = document.createElement('a')
+    const allItemsElement = document.createElement('a')
     const backupFile2 = new Blob([JSON.stringify(allItemsArray)], {type:'text/plain'})
-    element2.href = URL.createObjectURL(backupFile2)
-    element2.download = 'backupFile.txt'
-    document.body.appendChild(element2)
-    element2.click()
+    allItemsElement.href = URL.createObjectURL(backupFile2)
+    // rather than automatically downloading the file, there probably needs to be some method here to open a dialogue box so a location can be chosen for the backup file.  I think this solution is better than having a default backup folder, because the user has no control over where the files are stored (unless they get the code base from GIT and know how to modify the code)
+    allItemsElement.download = allItemsBackupFileName
+    document.body.appendChild(allItemsElement)
+    allItemsElement.click()
 
         }
 
@@ -69,10 +111,15 @@ function inventoryBackup(){
     return(
     <>
 
-
+{
+  importInventory !== '' && 
+  <ImportModal setImportInventory={setImportInventory}  importInventory={importInventory}  />
+}
 
 {  // show search button and view locations button  if viewrea string is 'start page'
 viewArea == "start page" && 
+importInventory == '' && 
+
 <>
 <div className='start-page-btns-div'>
 
@@ -94,13 +141,6 @@ viewArea == "start page" &&
 
 <button className="start-page-btns import-btn" onClick={() =>{inventoryImport();
 }}><p className='button-para'>Import Inventory</p><img className='import-img' src={importImg}></img></button> 
-
-<button className="start-page-btns use-import-btn" onClick={() =>{inventoryImport();
-
-}}><p className='button-para'>Use Imported Inventory</p></button>
-<div className="use-import-div">
-<p className="use-import-warning">WARNING: This action will replace the current inventory with the imported one. If the imported inventory is from another device, it is advisable that you backup this device's inventory first, and store it for safe keeping, so you can restore it if you need to</p>
-</div>
 
 </div>
 

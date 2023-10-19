@@ -315,7 +315,7 @@ select{font-size: var(--btn-font-small);}
 .warning-red{color: rgb(236, 113, 113) !important; font-weight: bold; font-style: italic;}
 
 
-.new-delete-button{color: white; font-weight: bold; font-size: 7px; background-color: var(--button-delete-color);}
+.new-delete-button, .import-cancel{color: white; font-weight: bold; font-size: 7px; background-color: var(--button-delete-color);}
 
 
 /* DUPLICATE WARNING - BOX*/
@@ -380,6 +380,12 @@ select{font-size: var(--btn-font-small);}
 .button-para{font-size: var(--btn-font-large); margin: 2px;}
 .backup-btn, .import-btn{padding: 0px 4px;}
 
-.use-import-btn{background-color: var(--button-neutral-color-blue);}
+.use-import-btn{background-color: var(--button-neutral-color-blue); font-size: var(--btn-font-medium);}
 .use-import-warning{color: var(--button-go-back-color);}
-.use-import-div{background-color: white; width: 80%; border-radius: var(--border-rad-medium);}
+.use-import-div{background-color: rgb(221, 213, 213); width: 80%; border-radius: var(--border-rad-medium); width: 90%; height: auto; margin: auto; padding: 10px; margin-top: 10px;}
+
+#choose-btn{display: block; font-size: var(--btn-font-small); width: fit-content; height: auto; margin: auto; margin-top: 10px;}
+/* (4) file chooser and original size getter, and displays original image size*/
+#pick-and-size{width:90%; height: auto;}
+#file-chooser{width: 90%; height: auto; margin: auto; font-size: var(--btn-font-small); font-weight: bold; color: black; margin-bottom: var(--element-margin-bottom-medium);}
+
