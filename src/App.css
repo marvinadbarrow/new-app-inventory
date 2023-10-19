@@ -389,3 +389,15 @@ select{font-size: var(--btn-font-small);}
 #pick-and-size{width:90%; height: auto;}
 #file-chooser{width: 90%; height: auto; margin: auto; font-size: var(--btn-font-small); font-weight: bold; color: black; margin-bottom: var(--element-margin-bottom-medium);}
 
+.backup-btns{width: 60%; height: auto; margin: auto; display: flex; flex-direction: column;}
+
+.backup-cancel{
+  font-size: var(--btn-font-medium); background-color: var(--button-go-back-color);
+}
+
+.backup-and-import{background-color: var(--button-neutral-color-blue);}
+.import-success-para{font-size: var(--para-font-size-medium); color: var(--font-color-yellow);}
+
+.return-btn{margin-bottom: var(--element-margin-bottom-medium);}
+.highlight-span{color: var(--font-color-light-blue);}
+.important-span{font-weight: bold; color: var(--font-color-red);}

@@ -17,10 +17,6 @@ import { VideoUserGuide } from "./VideoUserGuide";
 import { VideoShelf } from './VideoShelf'
 
 
-
-
-
-
 // localStorage.clear()
 
 function App() {
@@ -57,11 +53,12 @@ if(whatsStored == null){ // if no locations exist
   return JSON.parse(whatsStored) 
   })
 
-  // useEffect will update local storage when container array is changed. 
+  // SAVE INVENTORY TO LOCAL STORAGE WHEN CONTAINER STATE CHANGES. 
   useEffect(() =>{
     localStorage.setItem('storage_containers', JSON.stringify(container));
     }, [container])
 
+// SAVE ALL ITEMS ARRAY TO LOCAL STORAGE WHEN STATE CHANGES
   useEffect(() =>{
     localStorage.setItem('all_items', JSON.stringify(allItemsArray));
   }, [allItemsArray])
@@ -845,7 +842,7 @@ setContainer(newContainer)
 }
 
 {viewArea == "start page" && 
-<StartPage viewArea={viewArea} openSearch={openSearch}  openAllLocations={openAllLocations} fixLocationId={fixLocationId} openUserGuide={openUserGuide} container={container} allItemsArray={allItemsArray}/>
+<StartPage viewArea={viewArea} openSearch={openSearch}  openAllLocations={openAllLocations} fixLocationId={fixLocationId} openUserGuide={openUserGuide} container={container} allItemsArray={allItemsArray} setContainer={setContainer} setAllItemsArray={setAllItemsArray}/>
 }
 
 
