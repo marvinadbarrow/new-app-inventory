@@ -27,6 +27,7 @@
   --font-color-white:white;
   --font-color-yellow:yellow;
   --font-color-red:rgb(255, 0, 0);
+  --font-color-orange:orange;
 
   --border-color-grey:rgba(255, 255, 255, 0.5);
   --border-color-blue:#646cff;
@@ -396,8 +397,10 @@ select{font-size: var(--btn-font-small);}
 }
 
 .backup-and-import{background-color: var(--button-neutral-color-blue);}
-.import-success-para{font-size: var(--para-font-size-medium); color: var(--font-color-yellow);}
+.import-success-para{font-size: var(--para-font-size-medium); color: var(--font-color-blue); font-weight: bold;}
 
 .return-btn{margin-bottom: var(--element-margin-bottom-medium);}
 .highlight-span{color: var(--font-color-light-blue);}
 .important-span{font-weight: bold; color: var(--font-color-red);}
+
+.overwrite-confirmation{color: var(--font-color-orange);}

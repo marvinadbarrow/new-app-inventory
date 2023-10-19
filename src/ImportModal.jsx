@@ -6,15 +6,15 @@ import FilePlayer from 'react-player/file'
 export  const ImportModal = ({setImportInventory, setBackupInitiate, setContainer, setAllItemsArray}) =>{
 
     // state to hold imported inventory JSON
-    const [inventoryJson, setinventoryJSON] = useState('')
+    const [inventoryBackupJson, setinventoryBackupJSON] = useState('')
     // state to hold imported all items JSON
-    const [allItemsJson, setAllItemsJSON] = useState('')
+    const [allItemsBackupJson, setAllItemsJSON] = useState('')
     const [testConfirm, setTestConfirm] = useState('')
 
 
     const cancelImport = () =>{
         setAllItemsJSON('')
-        setinventoryJSON('')
+        setinventoryBackupJSON('')
         setImportInventory('')
 
         }
@@ -24,10 +24,12 @@ export  const ImportModal = ({setImportInventory, setBackupInitiate, setContaine
             setImportInventory('')
             setBackupInitiate('')
         }
-        let selectedFiles;       
+
+
+        let selectedFiles;    // VARIABLE for FileList   
 const prepareImportFilename = (e) =>{
 setAllItemsJSON('')
-setinventoryJSON('')
+setinventoryBackupJSON('')
 
     console.log('importing database...')
 console.log('log the event')
@@ -38,17 +40,19 @@ reader.onload = function(){
 let importResult = reader.result
 let resultObject = JSON.parse(importResult) // actually if you can parse, one of 
 
-if(resultObject[0].hasOwnProperty('location_contents')){
-    console.log('this is the CONTAINER backup')
-    console.log(resultObject) // an array of container with locations
-    setinventoryJSON(resultObject) // set state with IMPORTED inventory object
-}else if(resultObject[0].hasOwnProperty('item_name')){
-    console.log('this is the ALL ITEMS backup') 
-    console.log(resultObject) // an array all inventory items
-    setAllItemsJSON(resultObject) // set state with IMPORTED all items object
-}else{alert('no valid backup is contained in this file: choose another file or cancel import')}
-}
+let all_items_backup = JSON.parse(resultObject.all_items)
+let container_backup = JSON.parse(resultObject.container)
 
+// if file includes container information
+if(container_backup[0].hasOwnProperty('location_contents')){
+setinventoryBackupJSON(container_backup)//set state with IMPORTED inventory object
+}else{alert('no valid CONTAINER backup is contained in this file: choose another file or cancel import')}
+
+// if file includes ALL ITEMS information
+if(all_items_backup[0].hasOwnProperty('item_name')){
+    setAllItemsJSON(all_items_backup) // set state with IMPORTED all items object
+}else{alert('no valid ALL ITEMS backup is contained in this file: choose another file or cancel import')}
+}
 reader.readAsText(selectedFiles[0]);
 
 }
@@ -56,21 +60,19 @@ reader.readAsText(selectedFiles[0]);
 
 
 
-// this function accesses the imported objects and overwrites current inventory and all items arrays with imports if those already exist, or is used as a fresh copy if no locations have been created in the inventory. 
+// overwrites current inventory and all items arrays with imports if those already exist, or a fresh copy is created. 
 const useImport = (e) =>{
-
     
- if(inventoryJson !==''){
-    console.log('inventory creation in process...')
-    console.log(inventoryJson)
+ if(inventoryBackupJson !=='' && allItemsBackupJson !==''){
+    console.log(inventoryBackupJson)
+    console.log(allItemsBackupJson)
+    // this will render success message to modal
     setTestConfirm('yes')
-    setContainer(inventoryJson) // set import as new container
- }else if(allItemsJson !==''){
-    console.log('all items creation in process...')
-    console.log(allItemsJson)
-    setAllItemsArray(allItemsJson) // set import as new all items array
-setTestConfirm('yes')
-}else{alert('no valid backup is available to be used yet - please choose a valid file to proceed')}
+
+    // set container and ALL ITEMS as state - for new inventory installation
+    setContainer(inventoryBackupJson) 
+    setAllItemsArray(allItemsBackupJson) 
+ }else{alert('ALL ITEMS and/or CONTAINER information missing - cannot use this file')}
 
 }
 
@@ -133,14 +135,3 @@ return(<>
 
 </>)
 }
-
-
-/*
-<h3 className="overwrite-confirmation">Use Import Successful</h3>
-<p className="import-success-para">You can start using your inventory</p>
-<div className="confirmation-btn-holder">
-    <button className="return-btn">Return to Backup and Import</button>
-    <button className="return-btn">Return to Start Page</button>
-</div>
-
-*/

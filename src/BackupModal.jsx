@@ -25,15 +25,11 @@ export const BackupModal = ({setBackupInitiate, setBackupComplete, savedFiles}) 
         <>
         <h3 className="overwrite-confirmation">Backup Successful</h3>
    <p className="import-success-para">Your backup is downloaded </p>
-   <p className="post-backup-info">Backups are downloaded to the default download folder used by your browser. There are two backup files, named below:<br/><br/>
+   <p className="post-backup-info">Your Backup is downloaded to the default download folder used by your browser. Backup title:<br/><br/>
 
-   <span className="highlight-span">{savedFiles["Structure_backup"]}<br/>
-   {savedFiles["All_items_backup"]}<br/><br/></span>
+   <span className="highlight-span">{savedFiles["container"]}<br/></span>
 
-    The file names include the type of backup, the date, and time ( <span className="highlight-span">HH-MM-SS</span> format) the backup was made, as well as the the local timezone abbreviation, so they can be easily matched when selecting backups for import (on exremely rare occasions, the last digit of the time for the two files may differ by just one, due to the precise timing of backup creation).  Copy and save these two files to a secure location on your computer. As an extra precaution you may want to keep copies on a secondary device or even store them in a secure email for later retrieval. <br/><br/><br/>
-
-    <span className={'important-span'}>IMPORTANT!</span> When restoring an inventory, BOTH files are needed; if you  restore the <span className="highlight-span">INVENTORY backup</span> only, the app will still work and you will be able to navigate around the app and, create, add, transfer and delete items, create and delete locations, and view items and locations throughout the structure, but the search will likely fail, or at best, return inaccurate results, with a high probability of the app crashing as a result.  It is recommended that you ALWAYS keep these two files together and import the <span className="highlight-span">ALL ITEMS backup</span> immediately after importing the <span className="highlight-span">INVENTORY backup</span>  to avoid any issues. 
-
+    The <span className="highlight-span">INVENTORY backup</span> filename includes backup date, backup time (<span className="highlight-span">HH-MM-SS</span> - format), as well as the the local timezone abbreviation.  Copy and save this file to a secure location on your computer. And as an extra precaution you may want to keep a copy on a secondary device or even store a copy in a secure email for later retrieval. <br/><br/><br/>
     
     </p><br/>
    <div className="confirmation-btn-holder">

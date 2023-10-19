@@ -21,52 +21,37 @@ function inventoryImport(){
 
   }
 
-  // the below variables never change - they are part of the backup file names for container and all items backups. 
+  // description part of filename, for file that holds download. 
   const inventoryTextName = 'INVENTORY Backup - '
-  const allItemsTextName = 'ALL ITEMS Backup - '
+ 
+  let combinedObj = {
+    "container": JSON.stringify(container),
+    "all_items":  JSON.stringify(allItemsArray)
+  }
 
-// stringifying containter prior to using the string for new blob parameter
-let stringifiedContainer = [JSON.stringify(container)]
-// console.log(stringifiedContainer)
+// stringify entire object for new Blob
+let stringifiedContainer = [JSON.stringify(combinedObj)]
 
-
-// INVENTORY BACKUP FILENAMES
-
- // INVENTORY BACKUP 
+ // INVENTORY BACKUP process which creates a text file for download
 function inventoryBackup(){
 
-    // precise backup time is only needed for backup filenames at the actual time a backup is requested so they can live here. 
+    // create a current time and date string to be included in filename. 
       let currentDate = new Date(Date.now())
     let backupDate = currentDate.toUTCString().replaceAll(':', '-').replaceAll(',', '')
     let inventoryBackupFileName = inventoryTextName + backupDate + '.txt'
-    let allItemsBackupFileName = allItemsTextName + backupDate + '.txt'
-    
-
-    
+   
         console.log('backing up inventory...')
-        // TEMPORARY BACKUP FOR INVENTORY
-    
-        const containerElement = document.createElement('a')
-        const backupFile = new Blob(stringifiedContainer, {type:'text/plain'})
-        containerElement.href = URL.createObjectURL(backupFile)
-        containerElement.download = inventoryBackupFileName
-        document.body.appendChild(containerElement)
-        containerElement.click()
-    
-    
-    
-        const allItemsElement = document.createElement('a')
-        const backupFile2 = new Blob([JSON.stringify(allItemsArray)], {type:'text/plain'})
-        allItemsElement.href = URL.createObjectURL(backupFile2)
-        // rather than automatically downloading the file, there probably needs to be some method here to open a dialogue box so a location can be chosen for the backup file.  I think this solution is better than having a default backup folder, because the user has no control over where the files are stored (unless they get the code base from GIT and know how to modify the code)
-        allItemsElement.download = allItemsBackupFileName
-        document.body.appendChild(allItemsElement)
-        allItemsElement.click()
-    
-        // storing saved file names in an object to be used as prop on 'BackupModal' component
+// create a blob that will convert inventory object to a text file for download
+        const combinedElement = document.createElement('a')
+        const backupFile3 = new Blob(stringifiedContainer, {type:'text/plain'} )
+        combinedElement.href = URL.createObjectURL(backupFile3)
+        combinedElement.download = inventoryBackupFileName
+        document.body.appendChild(combinedElement)
+        combinedElement.click()
+
+    // storing saved filename in an object to be used as prop on 'BackupModal' component
         setSavedFiles({
-          "Structure_backup": inventoryBackupFileName,
-          "All_items_backup": allItemsBackupFileName
+          "container": inventoryBackupFileName,
         })
         setBackupComplete('complete')
 // this will close remove backup buttons and restore regular start page buttons
@@ -79,11 +64,6 @@ setBackupInitiate('')
 
  return(
 <>
-
-
-  {/* <ConfirmationModal setImportInventory={setImportInventory}  importInventory={importInventory}  setBackupInitiate={setBackupInitiate}  setShowConfirmation={setShowConfirmation}  /> */}
-
-
 
 
 { // import modal will show when import button below is pressed
