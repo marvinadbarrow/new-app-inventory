@@ -358,7 +358,7 @@ select{font-size: var(--btn-font-small);}
 
 .vid-thumbnail{width: 100%; border-radius: var(--border-rad-medium);}
 .user-guide-para{font-size: var(--btn-font-large); color: var(--font-color-light-blue);}
-.video-list{padding: 0px; width: 90%; display: flex; flex-direction: row; flex-wrap: wrap; justify-content: space-around;}
+.video-list{padding: 0px; width: 96%; display: flex; flex-direction: row; flex-wrap: wrap; justify-content: space-around;}
 .vid-button{font-size: var(--btn-font-small); display: inline; margin: var(--element-margin-bottom-small) 0px;}
 .vid-player-div{width: fit-content; height: fit-content; margin: auto;}
 .video-title{font-size: var(--btn-font-large);}

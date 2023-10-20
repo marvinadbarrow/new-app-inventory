@@ -59,6 +59,14 @@ setVideoProps('https://youtu.be/fSDr-TVr6sA', 'Search Items')
 setVideoProps('https://youtu.be/upuDD93LXSA', 'Delete areas')
 }}>Delete elements</button>
 
+<button className="vid-button  vid-btn-blue" onClick={() =>{
+setVideoProps('https://www.youtube.com/watch?v=Cp5CG3kaNyI', 'Backup inventory')
+}}>Backup inventory</button>
+
+<button className="vid-button vid-btn-blue" onClick={() =>{
+setVideoProps('https://www.youtube.com/watch?v=6Mn47FL2r8Y', 'Import inventory')
+}}>Import inventory</button>
+
 </div>
 
 </div>
