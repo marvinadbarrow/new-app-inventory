@@ -87,11 +87,8 @@ return(<>
 {
     testConfirm == '' &&
 <>
-<p className="use-import-warning"><b>WARNING: </b>If you procede with this import, should there already exist an inventory on this device, it will be overwritten.  If the imported inventory is a backup from a different device, to avoid losing data, consider backing up this device's inventory first, by cancelling the import and using the backup button on screen. Otherwise you can import as normal, since there is no inventory here to overwrite. 
-<br/>
-<br/>
-
-<b>IMPORTANT!</b> - please remember to import 'BOTH' inventory files, the 'INVENTORY...txt' file and the 'ALL ITEMS.....txt' file.  Without the 'all items' import your search results will be inaccurate or non-existent and may result in an application crash. </p>
+<p className="use-import-warning"><b>WARNING: </b>If you procede with this import (by importing a backup file and clicking 'use BACKUP'), should there already exist an inventory on this device, it will be overwritten.  If the imported inventory is a backup from a different device, to avoid losing data, consider backing up this device's inventory first, by cancelling the import and using the backup button on screen. Otherwise you can import as normal, since there is no inventory here to overwrite. 
+ </p>
 
 <button className='import-cancel' onClick={() =>{cancelImport()}} >CANCEL IMPORT</button>
 
