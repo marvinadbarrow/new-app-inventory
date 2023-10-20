@@ -25,7 +25,7 @@ export const BackupModal = ({setBackupInitiate, setBackupComplete, savedFiles}) 
         <>
         <h3 className="overwrite-confirmation">Backup Successful</h3>
    <p className="import-success-para">Your backup is downloaded </p>
-   <p className="post-backup-info">Your Backup is downloaded to the default download folder used by your browser. Backup title:<br/><br/>
+   <p className="post-backup-info">Your Backup is downloaded to the default download folder used by your browser. Backup filename:<br/><br/>
 
    <span className="highlight-span">{savedFiles["container"]}<br/></span>
 
