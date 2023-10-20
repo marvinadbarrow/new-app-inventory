@@ -35,8 +35,9 @@ let stringifiedContainer = [JSON.stringify(combinedObj)]
  // INVENTORY BACKUP process which creates a text file for download
 function inventoryBackup(){
 
+  if(container.length > 0){
     // create a current time and date string to be included in filename. 
-      let currentDate = new Date(Date.now())
+    let currentDate = new Date(Date.now())
     let backupDate = currentDate.toUTCString().replaceAll(':', '-').replaceAll(',', '')
     let inventoryBackupFileName = inventoryTextName + backupDate + '.txt'
    
@@ -55,6 +56,9 @@ function inventoryBackup(){
         })
         setBackupComplete('complete')
 // this will close remove backup buttons and restore regular start page buttons
+
+  }else{alert('no inventory exists to backup; consider importing an inventory - otherwise you may begin manually building and populating the inventory ')}
+
 
             }
     
